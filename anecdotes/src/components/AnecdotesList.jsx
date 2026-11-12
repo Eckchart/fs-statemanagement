@@ -1,7 +1,7 @@
 import Anecdote from './Anecdote'
 import { useAnecdotes } from '../store'
 
-const AnecdoteList = () => {
+const AnecdotesList = () => {
   const anecdotes = useAnecdotes()
   
   // sorted in descending order by votes
@@ -17,4 +17,4 @@ const AnecdoteList = () => {
   )
 }
 
-export default AnecdoteList
+export default AnecdotesList
