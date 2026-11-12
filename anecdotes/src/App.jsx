@@ -1,8 +1,15 @@
-import { useAnecdotes, useAnecdotesActions } from "./store"
+import { useAnecdotes, useAnecdotesActions, asObject } from "./store"
 
 const App = () => {
   const anecdotes = useAnecdotes()
-  const { vote } = useAnecdotesActions()
+  const { add, vote } = useAnecdotesActions()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const inputFieldContent = e.target.anecdote.value
+    add(asObject(inputFieldContent))
+    e.target.reset()  // reset form
+  }
 
   return (
     <div>
@@ -21,12 +28,12 @@ const App = () => {
 
       <h2>create new</h2>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
-          <input data-testid="new" />
+          <input data-testid="new" name="anecdote" />
         </div>
 
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   )
