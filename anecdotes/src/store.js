@@ -1,14 +1,6 @@
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
-
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+import anecdoteService from './services/anecdotes'
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
@@ -19,7 +11,7 @@ const asObject = anecdote => ({
 })
 
 const useAnecdoteStore = create((set) => ({
-  anecdotes: anecdotesAtStart.map(asObject),
+  anecdotes: [],
   filter: '',
   actions: {
     add: (anecdote) => set(
@@ -27,7 +19,7 @@ const useAnecdoteStore = create((set) => ({
         anecdotes: [...state.anecdotes, anecdote]
       })
     ),
-    
+   
     vote: (id) => set(
       (state) => ({
         anecdotes: state.anecdotes.map(anecdote =>
@@ -36,10 +28,18 @@ const useAnecdoteStore = create((set) => ({
       })
     ),
 
-    setFilter: (newText) => set(() => ({ filter: newText }) )
+    setFilter: (newText) => set(() => ({ filter: newText })),
+
+    initialize: async () => {
+      const anecdotes = await anecdoteService.getAll()
+      set(() => ({ anecdotes: anecdotes }))
+    }
   }
 }))
 
+// Btw, very obvious thing:
+// ({ anecdotes, filter }) must EXACTLY match the property names of the
+// 'useAnecdoteStore' hook (worst case can use destructured aliases).
 const useAnecdotes = () => useAnecdoteStore(useShallow(({ anecdotes, filter }) =>
   anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
 ))

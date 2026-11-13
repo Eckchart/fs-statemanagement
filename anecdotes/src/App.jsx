@@ -1,16 +1,26 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdotesList from './components/AnecdotesList'
 import Filter from './components/Filter'
+import { useAnecdotesActions } from './store'
+import { useEffect } from 'react'
 
-const App = () => (
-  <div>
-    <Filter />
+const App = () => {
+  const { initialize } = useAnecdotesActions()
 
-    <h2>Anecdotes</h2>
+  useEffect(() => {
+    initialize()
+  }, [initialize])
 
-    <AnecdotesList />
-    <AnecdoteForm />
-  </div>
-)
+  return (
+    <div>
+      <Filter />
+
+      <h2>Anecdotes</h2>
+
+      <AnecdotesList />
+      <AnecdoteForm />
+    </div>
+  )
+}
 
 export default App
