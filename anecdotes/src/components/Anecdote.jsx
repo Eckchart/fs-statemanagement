@@ -1,8 +1,9 @@
-import { useAnecdotesActions } from '../store'
+import { useAnecdotesActions } from '../anecdotesStore'
 import { useNotificationActions } from '../notificationStore'
 
+
 const Anecdote = ({ anecdote }) => {
-  const { vote } = useAnecdotesActions()
+  const { vote, remove } = useAnecdotesActions()
   const { setNotification } = useNotificationActions()
   
   const handleVote = async () => {
@@ -17,6 +18,9 @@ const Anecdote = ({ anecdote }) => {
       <div>
         has {anecdote.votes}
         <button onClick={handleVote}>vote</button>
+        {anecdote.votes === 0 &&
+          <button onClick={() => remove(anecdote.id)}>delete</button>
+        }
       </div>
     </div>
   )

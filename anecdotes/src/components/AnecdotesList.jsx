@@ -1,5 +1,5 @@
 import Anecdote from './Anecdote'
-import { useAnecdotes } from '../store'
+import { useAnecdotes } from '../anecdotesStore'
 
 const AnecdotesList = () => {
   const anecdotes = useAnecdotes()

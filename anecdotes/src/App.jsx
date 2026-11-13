@@ -1,7 +1,7 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdotesList from './components/AnecdotesList'
 import Filter from './components/Filter'
-import { useAnecdotesActions } from './store'
+import { useAnecdotesActions } from './anecdotesStore'
 import { useEffect } from 'react'
 import Notification from './components/Notification'
 
