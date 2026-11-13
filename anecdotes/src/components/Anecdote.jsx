@@ -8,7 +8,7 @@ const Anecdote = ({ anecdote }) => {
   
   const handleVote = async () => {
     vote(anecdote.id)
-    setNotification(`You voted '${anecdote.content}'`)
+    setNotification(`you voted '${anecdote.content}'`)
   }
   
   return (
