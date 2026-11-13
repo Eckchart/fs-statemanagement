@@ -1,4 +1,4 @@
-import { useAnecdotesActions, asObject } from '../store'
+import { useAnecdotesActions } from '../store'
 
 const AnecdoteForm = () => {
   const { add } = useAnecdotesActions()
@@ -6,7 +6,7 @@ const AnecdoteForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const inputFieldContent = e.target.anecdote.value
-    add(asObject(inputFieldContent))
+    add(inputFieldContent)
     e.target.reset()  // reset form
   }
 

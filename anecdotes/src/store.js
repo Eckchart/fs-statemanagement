@@ -2,23 +2,15 @@ import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 import anecdoteService from './services/anecdotes'
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = anecdote => ({
-  content: anecdote,
-  id: getId(),
-  votes: 0
-})
-
 const useAnecdoteStore = create((set) => ({
   anecdotes: [],
   filter: '',
   actions: {
-    add: (anecdote) => set(
-      (state) => ({
-        anecdotes: [...state.anecdotes, anecdote]
-      })
-    ),
+    add: async (content) => {
+      const createdAnecdote = await anecdoteService.createNew(content)
+      
+      set((state) => ({ anecdotes: [...state.anecdotes, createdAnecdote] }))
+    },
    
     vote: (id) => set(
       (state) => ({
@@ -46,4 +38,4 @@ const useAnecdotes = () => useAnecdoteStore(useShallow(({ anecdotes, filter }) =
 
 const useAnecdotesActions = () => useAnecdoteStore((state) => state.actions)
 
-export { useAnecdotes, useAnecdotesActions, asObject }
+export { useAnecdotes, useAnecdotesActions }
