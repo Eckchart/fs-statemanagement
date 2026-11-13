@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 import anecdoteService from './services/anecdotes'
 
-const useAnecdoteStore = create((set) => ({
+const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
   filter: '',
   actions: {
@@ -12,13 +12,20 @@ const useAnecdoteStore = create((set) => ({
       set((state) => ({ anecdotes: [...state.anecdotes, createdAnecdote] }))
     },
    
-    vote: (id) => set(
-      (state) => ({
+    vote: async (id) => {
+      const anecdoteToUpdate = get().anecdotes.find(
+        anecdote => anecdote.id === id
+      )
+      const updatedAnecdote = await anecdoteService.update(
+        id,
+        { ...anecdoteToUpdate, votes: anecdoteToUpdate.votes + 1 }
+      )
+      
+      set((state) => ({
         anecdotes: state.anecdotes.map(anecdote =>
-          anecdote.id === id ? { ...anecdote, votes: anecdote.votes + 1 } : anecdote
-        )
-      })
-    ),
+          anecdote.id === id ? updatedAnecdote : anecdote)
+      }))
+    },
 
     setFilter: (newText) => set(() => ({ filter: newText })),
 
