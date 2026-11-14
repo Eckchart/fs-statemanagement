@@ -2,15 +2,11 @@ import Anecdote from './Anecdote'
 import { useAnecdotes } from '../anecdotesStore'
 
 const AnecdotesList = () => {
-  const anecdotes = useAnecdotes()
-  
-  // sorted in descending order by votes
-  // Zustand state must not be mutated!
-  const anecdotesSortedByVotes = anecdotes.toSorted((a1, a2) => a2.votes - a1.votes)
+  const anecdotesFilteredAndSortedByVotes = useAnecdotes()
   
   return (
     <div>
-      {anecdotesSortedByVotes.map((anecdote) =>
+      {anecdotesFilteredAndSortedByVotes.map((anecdote) =>
         <Anecdote key={anecdote.id} anecdote={anecdote} />
       )}
     </div>

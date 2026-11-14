@@ -48,7 +48,12 @@ const useAnecdoteStore = create((set, get) => ({
 // ({ anecdotes, filter }) must EXACTLY match the property names of the
 // 'useAnecdoteStore' hook (worst case can use destructured aliases).
 const useAnecdotes = () => useAnecdoteStore(useShallow(({ anecdotes, filter }) =>
-  anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+  anecdotes
+    .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+
+    // sorted in descending order by votes
+    // Zustand state must not be mutated!
+    .toSorted((a1, a2) => a2.votes - a1.votes)
 ))
 
 const useAnecdotesActions = () => useAnecdoteStore((state) => state.actions)
