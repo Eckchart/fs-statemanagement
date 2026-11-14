@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 import anecdoteService from './services/anecdotes'
 
-const useAnecdoteStore = create((set, get) => ({
+const useAnecdotesStore = create((set, get) => ({
   anecdotes: [],
   filter: '',
   actions: {
@@ -47,7 +47,7 @@ const useAnecdoteStore = create((set, get) => ({
 // Btw, very obvious thing:
 // ({ anecdotes, filter }) must EXACTLY match the property names of the
 // 'useAnecdoteStore' hook (worst case can use destructured aliases).
-const useAnecdotes = () => useAnecdoteStore(useShallow(({ anecdotes, filter }) =>
+const useAnecdotes = () => useAnecdotesStore(useShallow(({ anecdotes, filter }) =>
   anecdotes
     .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
 
@@ -56,8 +56,8 @@ const useAnecdotes = () => useAnecdoteStore(useShallow(({ anecdotes, filter }) =
     .toSorted((a1, a2) => a2.votes - a1.votes)
 ))
 
-const useAnecdotesActions = () => useAnecdoteStore((state) => state.actions)
+const useAnecdotesActions = () => useAnecdotesStore((state) => state.actions)
 
 export { useAnecdotes, useAnecdotesActions }
 
-export default useAnecdoteStore
+export default useAnecdotesStore
