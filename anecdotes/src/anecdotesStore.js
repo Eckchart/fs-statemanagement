@@ -31,7 +31,7 @@ const useAnecdotesStore = create((set, get) => ({
 
     initialize: async () => {
       const anecdotes = await anecdoteService.getAll()
-      set(() => ({ anecdotes: anecdotes }))
+      set(() => ({ anecdotes }))
     },
 
     remove: async (id) => {

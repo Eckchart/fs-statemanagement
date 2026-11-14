@@ -21,8 +21,8 @@ beforeEach(() => {
 describe('useAnecdotesActions', () => {
   it('state is initialized with the anecdotes returned by the backend', async () => {
     // since useAnecdotes returns the anecdotes sorted in descending order
-    // by number of votes, we should declare our mock anecdotes like that
-    // to make our life easier.
+    // by number of votes, we should declare our mock anecdotes in descending
+    // order of votes to make our life easier.
     const mockAnecdotes = [
       {
         "id": "67",
@@ -85,8 +85,43 @@ describe('useAnecdotesActions', () => {
 
     const { result } = renderHook(() => useAnecdotes())
 
-    // performs a deep equality correctly
     expect(result.current.length).toBe(1)
     expect(result.current[0].id).toEqual('69')
+  })
+
+  it('Voting increases the number of votes for an anecdote', async () => {
+    const mockAnecdotes = [
+      {
+        "id": "67",
+        "content": "Content2",
+        "votes": 69
+      },
+      {
+        "id": "69",
+        "content": "Content1",
+        "votes": 0
+      }
+    ]
+    useAnecdotesStore.setState({ anecdotes: mockAnecdotes })
+    anecdoteService.update
+      .mockResolvedValueOnce({
+        ...mockAnecdotes[0],
+        votes: 70
+      })
+      .mockResolvedValueOnce({
+        ...mockAnecdotes[0],
+        votes: 71
+      })
+
+    const { result: anecdotesActions } = renderHook(() => useAnecdotesActions())
+    
+    await act(async () => {
+      await anecdotesActions.current.vote(mockAnecdotes[0].id)
+      await anecdotesActions.current.vote(mockAnecdotes[0].id)
+    })
+
+    const { result } = renderHook(() => useAnecdotes())
+
+    expect(result.current[0].votes).toEqual(71)
   })
 })
