@@ -1,18 +1,31 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
+import anecdoteService from './requests'
+import { useState, useEffect } from 'react'
 
 const App = () => {
-  const handleVote = (anecdote) => {
-    console.log('vote')
-  }
+  const [anecdotes, setAnecdotes] = useState([])
 
-  const anecdotes = [
-    {
-      content: 'If it hurts, do it more often',
-      id: '47145',
-      votes: 0,
-    },
-  ]
+  useEffect(() => {
+    anecdoteService.getAnecdotes().then(initialAnecdotes => setAnecdotes(initialAnecdotes))
+  }, [])
+
+  if (!anecdotes) {
+    return (
+      <div>
+        Loading...
+      </div>
+    )
+  }
+  
+  const handleVote = async (anecdote) => {
+    const updatedAnecdote = await anecdoteService.updateAnecdote(
+      { ...anecdote, votes: anecdote.votes + 1 }
+    )
+    setAnecdotes(anecdotes.map(curAnecdote =>
+      curAnecdote.id === anecdote.id ? updatedAnecdote : curAnecdote
+    ))
+  }
 
   return (
     <div>

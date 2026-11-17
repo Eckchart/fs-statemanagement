@@ -36,6 +36,6 @@ app.post("/anecdotes", json(), async (req, res) => {
 
 app.use(createApp(db))
 
-app.listen(3001, () => {
+app.listen(3002, () => {
   console.log("JSON Server is running")
 })

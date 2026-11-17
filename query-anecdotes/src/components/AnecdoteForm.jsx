@@ -1,9 +1,11 @@
+import anecdoteService from '../requests'
+
 const AnecdoteForm = () => {
-  const onCreate = (event) => {
+  const onCreate = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
+    await anecdoteService.createAnecdote({ content, votes: 0 })
     event.target.reset()
-    console.log('new anecdote')
   }
 
   return (
