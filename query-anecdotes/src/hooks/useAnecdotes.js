@@ -7,7 +7,8 @@ const useAnecdotes = () => {
   const result = useQuery({
     queryKey: ['anecdotes'],
     queryFn: getAnecdotes,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    retry: false  // NO RETRIES ARE MADE
   })
 
   const updateAnecdoteMutation = useMutation({
@@ -39,6 +40,7 @@ const useAnecdotes = () => {
   return {
     anecdotes: result.data,
     isPending: result.isPending,
+    isError: result.isError,
     addAnecdote: (content) => newAnecdoteMutation.mutate({ content, votes: 0 }),
     updateAnecdote: (anecdote) => updateAnecdoteMutation.mutate({
       ...anecdote, votes: anecdote.votes + 1
