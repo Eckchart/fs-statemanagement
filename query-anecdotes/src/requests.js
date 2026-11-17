@@ -36,4 +36,4 @@ const updateAnecdote = async (updatedAnecdote) => {
   return await response.json()
 }
 
-export default { getAnecdotes, createAnecdote, updateAnecdote }
+export { getAnecdotes, createAnecdote, updateAnecdote }

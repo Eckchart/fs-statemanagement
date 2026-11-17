@@ -1,10 +1,15 @@
-import anecdoteService from '../requests'
+import { createAnecdote } from '../requests'
+import { useMutation } from '@tanstack/react-query'
 
 const AnecdoteForm = () => {
+  const newAnecdoteMutation = useMutation({
+    mutationFn: createAnecdote
+  })
+  
   const onCreate = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-    await anecdoteService.createAnecdote({ content, votes: 0 })
+    newAnecdoteMutation.mutate({ content, votes: 0 })
     event.target.reset()
   }
 

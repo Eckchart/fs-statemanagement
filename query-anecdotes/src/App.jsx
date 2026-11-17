@@ -1,13 +1,13 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import anecdoteService from './requests'
+import { getAnecdotes, updateAnecdote } from './requests'
 import { useState, useEffect } from 'react'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([])
 
   useEffect(() => {
-    anecdoteService.getAnecdotes().then(initialAnecdotes => setAnecdotes(initialAnecdotes))
+    getAnecdotes().then(initialAnecdotes => setAnecdotes(initialAnecdotes))
   }, [])
 
   if (!anecdotes) {
@@ -19,7 +19,7 @@ const App = () => {
   }
   
   const handleVote = async (anecdote) => {
-    const updatedAnecdote = await anecdoteService.updateAnecdote(
+    const updatedAnecdote = await updateAnecdote(
       { ...anecdote, votes: anecdote.votes + 1 }
     )
     setAnecdotes(anecdotes.map(curAnecdote =>
