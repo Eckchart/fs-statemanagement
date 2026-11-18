@@ -1,9 +1,11 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useAnecdotes } from './hooks/useAnecdotes'
+import { useNotify } from './hooks/useNotify'
 
 const App = () => {
   const { anecdotes, isPending, isError, updateAnecdote } = useAnecdotes()
+  const { changeNotifState } = useNotify()
 
   if (isError) {
     return (
@@ -22,6 +24,7 @@ const App = () => {
   
   const handleVote = async (anecdote) => {
     updateAnecdote(anecdote)
+    changeNotifState(`anecdote '${anecdote.content}' voted`)
   }
 
   return (
